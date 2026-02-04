@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Send, MessageCircle, Mail, MapPin, Phone } from "lucide-react";
+import { Send, MessageCircle, Mail, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const deviceTypes = [
   "Laptop",
@@ -41,22 +42,38 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const { error } = await supabase.from("repair_requests").insert({
+        name: formData.name.trim(),
+        device_type: formData.deviceType,
+        problem: formData.problem.trim(),
+        contact_method: formData.contactMethod,
+        contact: formData.contact.trim(),
+      });
 
-    toast({
-      title: "Request Received! 🎉",
-      description: "I'll get back to you within 24 hours.",
-    });
+      if (error) throw error;
 
-    setFormData({
-      name: "",
-      deviceType: "",
-      problem: "",
-      contactMethod: "whatsapp",
-      contact: "",
-    });
-    setIsSubmitting(false);
+      toast({
+        title: "Request Received! 🎉",
+        description: "I'll get back to you within 24 hours.",
+      });
+
+      setFormData({
+        name: "",
+        deviceType: "",
+        problem: "",
+        contactMethod: "whatsapp",
+        contact: "",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: "Failed to submit request. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
