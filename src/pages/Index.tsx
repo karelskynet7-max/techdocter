@@ -1,12 +1,24 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Header from "@/components/Header";
+import Hero from "@/components/Hero";
+import Services from "@/components/Services";
+import About from "@/components/About";
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
+
+// Change this to customize your brand name
+const BRAND_NAME = "TechFix NL";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Header brandName={BRAND_NAME} />
+      <main>
+        <Hero brandName={BRAND_NAME} />
+        <Services />
+        <About />
+        <Contact />
+      </main>
+      <Footer brandName={BRAND_NAME} />
     </div>
   );
 };
