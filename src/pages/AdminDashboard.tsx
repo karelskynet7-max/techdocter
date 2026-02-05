@@ -14,8 +14,9 @@ import {
   Home,
   Wifi,
   RefreshCw,
-  Link,
-  Copy
+  Copy,
+  Eye,
+  EyeOff
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -63,6 +64,18 @@ const statusColors: Record<string, string> = {
   cancelled: "bg-red-500/10 text-red-600 border-red-500/20",
 };
 
+// Mask contact information for privacy - only reveal on explicit action
+const maskContact = (contact: string, method: string): string => {
+  if (method === 'email') {
+    const [user, domain] = contact.split('@');
+    if (!user || !domain) return '***@***';
+    return `${user.substring(0, 2)}***@${domain}`;
+  } else {
+    if (contact.length < 6) return '***';
+    return contact.substring(0, 3) + '***' + contact.substring(contact.length - 2);
+  }
+};
+
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -71,6 +84,33 @@ const AdminDashboard = () => {
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState<RepairRequest | null>(null);
   const [notes, setNotes] = useState("");
+  const [revealedContacts, setRevealedContacts] = useState<Set<string>>(new Set());
+
+  const toggleContactReveal = (requestId: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation();
+    }
+    setRevealedContacts(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(requestId)) {
+        newSet.delete(requestId);
+      } else {
+        newSet.add(requestId);
+      }
+      return newSet;
+    });
+  };
+
+  const getDisplayContact = (request: RepairRequest): string => {
+    if (revealedContacts.has(request.id)) {
+      return request.contact;
+    }
+    return maskContact(request.contact, request.contact_method);
+  };
+
+  const isContactRevealed = (requestId: string): boolean => {
+    return revealedContacts.has(requestId);
+  };
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -304,7 +344,18 @@ const AdminDashboard = () => {
                         ) : (
                           <Mail className="w-3 h-3" />
                         )}
-                        {request.contact}
+                        <span 
+                          onClick={(e) => toggleContactReveal(request.id, e)}
+                          className="cursor-pointer hover:text-primary transition-colors flex items-center gap-1"
+                          title={isContactRevealed(request.id) ? "Click to hide" : "Click to reveal"}
+                        >
+                          {getDisplayContact(request)}
+                          {isContactRevealed(request.id) ? (
+                            <EyeOff className="w-3 h-3" />
+                          ) : (
+                            <Eye className="w-3 h-3" />
+                          )}
+                        </span>
                       </div>
                       <div>
                         {new Date(request.created_at).toLocaleDateString("nl-NL", {
@@ -378,18 +429,35 @@ const AdminDashboard = () => {
                       ) : (
                         <Mail className="w-4 h-4 text-primary" />
                       )}
-                      <a
-                        href={
-                          selectedRequest.contact_method === "whatsapp"
-                            ? `https://wa.me/${selectedRequest.contact.replace(/\D/g, "")}`
-                            : `mailto:${selectedRequest.contact}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline"
+                      <span className="text-foreground">
+                        {getDisplayContact(selectedRequest)}
+                      </span>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => toggleContactReveal(selectedRequest.id)}
+                        title={isContactRevealed(selectedRequest.id) ? "Hide contact" : "Reveal contact"}
                       >
-                        {selectedRequest.contact}
-                      </a>
+                        {isContactRevealed(selectedRequest.id) ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
+                      </Button>
+                      {isContactRevealed(selectedRequest.id) && (
+                        <a
+                          href={
+                            selectedRequest.contact_method === "whatsapp"
+                              ? `https://wa.me/${selectedRequest.contact.replace(/\D/g, "")}`
+                              : `mailto:${selectedRequest.contact}`
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:underline text-sm"
+                        >
+                          Contact
+                        </a>
+                      )}
                     </div>
                   </div>
 
