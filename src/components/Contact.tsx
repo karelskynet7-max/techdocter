@@ -131,15 +131,18 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Map Placeholder */}
-            <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-8 border border-border">
-              <div className="flex items-center justify-center h-48 text-muted-foreground">
-                <div className="text-center">
-                  <MapPin className="w-12 h-12 mx-auto mb-3 text-primary/50" />
-                  <p className="font-medium">Service throughout the Netherlands</p>
-                  <p className="text-sm mt-1">Remote diagnostics available</p>
-                </div>
-              </div>
+            {/* Map */}
+            <div className="rounded-2xl overflow-hidden border border-border">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9882.394276789!2d5.805!3d51.825!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c70837a05e5c93%3A0x8c08e0c6d09ff7d2!2sTolhuis%2C%20Nijmegen!5e0!3m2!1sen!2snl!4v1707100000000!5m2!1sen!2snl"
+                width="100%"
+                height="256"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Service Location - Tolhuis, Dukenburg, Nijmegen"
+              />
             </div>
           </div>
 
