@@ -23,6 +23,7 @@ interface RepairRequest {
   device_type: string;
   problem: string;
   status: string;
+  notes: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -81,7 +82,7 @@ const TrackRepair = () => {
 
       const { data, error: fetchError } = await supabase
         .from("repair_requests")
-        .select("id, name, device_type, problem, status, created_at, updated_at")
+        .select("id, name, device_type, problem, status, notes, created_at, updated_at")
         .eq("tracking_token", token)
         .maybeSingle();
 
@@ -185,6 +186,15 @@ const TrackRepair = () => {
                 {request.problem}
               </div>
             </div>
+
+            {request.notes && (
+              <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+                <div className="text-sm font-medium text-primary mb-1">Note from Technician</div>
+                <div className="text-foreground">
+                  {request.notes}
+                </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
               <div>
