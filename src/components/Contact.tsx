@@ -44,22 +44,19 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      const { data, error } = await supabase
-        .from("repair_requests")
-        .insert({
-          name: formData.name.trim(),
-          device_type: formData.deviceType,
-          problem: formData.problem.trim(),
-          contact_method: formData.contactMethod,
-          contact: formData.contact.trim(),
-        })
-        .select("tracking_token")
-        .single();
+      const { data: trackingToken, error } = await supabase
+        .rpc('submit_repair_request', {
+          p_name: formData.name.trim(),
+          p_device_type: formData.deviceType,
+          p_problem: formData.problem.trim(),
+          p_contact_method: formData.contactMethod,
+          p_contact: formData.contact.trim(),
+        });
 
       if (error) throw error;
 
-      // Generate tracking link
-      const trackingUrl = `${window.location.origin}/track/${data.tracking_token}`;
+      // Generate tracking link using the returned tracking token
+      const trackingUrl = `${window.location.origin}/track/${trackingToken}`;
       setTrackingLink(trackingUrl);
 
       toast({
