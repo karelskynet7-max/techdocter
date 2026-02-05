@@ -13,7 +13,9 @@ import {
   Monitor,
   Home,
   Wifi,
-  RefreshCw
+  RefreshCw,
+  Link,
+  Copy
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -38,6 +40,7 @@ interface RepairRequest {
   contact: string;
   status: string;
   notes: string | null;
+  tracking_token: string;
   created_at: string;
   updated_at: string;
 }
@@ -342,11 +345,36 @@ const AdminDashboard = () => {
                     <div className="text-foreground">{selectedRequest.problem}</div>
                   </div>
 
+                  {/* Tracking Link */}
+                  <div>
+                    <label className="text-sm text-muted-foreground mb-2 block">Tracking Link</label>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 bg-muted rounded-lg px-3 py-2 text-xs font-mono text-muted-foreground truncate">
+                        {`${window.location.origin}/track/${selectedRequest.tracking_token}`}
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            `${window.location.origin}/track/${selectedRequest.tracking_token}`
+                          );
+                          toast({ title: "Tracking link copied!" });
+                        }}
+                      >
+                        <Copy className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Send this link to client via WhatsApp/Email
+                    </p>
+                  </div>
+
                   <div>
                     <label className="text-sm text-muted-foreground">Contact</label>
                     <div className="flex items-center gap-2">
                       {selectedRequest.contact_method === "whatsapp" ? (
-                        <MessageCircle className="w-4 h-4 text-green-500" />
+                        <MessageCircle className="w-4 h-4 text-accent" />
                       ) : (
                         <Mail className="w-4 h-4 text-primary" />
                       )}
