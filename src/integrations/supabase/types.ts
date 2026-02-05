@@ -103,12 +103,35 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_repair_by_token: {
+        Args: { token: string }
+        Returns: {
+          created_at: string
+          device_type: string
+          id: string
+          name: string
+          notes: string
+          problem: string
+          status: string
+          updated_at: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      submit_repair_request: {
+        Args: {
+          p_contact: string
+          p_contact_method: string
+          p_device_type: string
+          p_name: string
+          p_problem: string
+        }
+        Returns: string
       }
     }
     Enums: {

@@ -81,9 +81,7 @@ const TrackRepair = () => {
       }
 
       const { data, error: fetchError } = await supabase
-        .from("repair_requests")
-        .select("id, name, device_type, problem, status, notes, created_at, updated_at")
-        .eq("tracking_token", token)
+        .rpc('get_repair_by_token', { token })
         .maybeSingle();
 
       if (fetchError) {
