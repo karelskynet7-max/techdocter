@@ -49,6 +49,7 @@ export type Database = {
           notes: string | null
           problem: string
           status: string
+          tracking_token: string
           updated_at: string
         }
         Insert: {
@@ -61,6 +62,7 @@ export type Database = {
           notes?: string | null
           problem: string
           status?: string
+          tracking_token?: string
           updated_at?: string
         }
         Update: {
@@ -73,6 +75,7 @@ export type Database = {
           notes?: string | null
           problem?: string
           status?: string
+          tracking_token?: string
           updated_at?: string
         }
         Relationships: []

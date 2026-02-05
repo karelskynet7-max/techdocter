@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Send, MessageCircle, Mail, MapPin } from "lucide-react";
+import { Send, MessageCircle, Mail, MapPin, CheckCircle, Copy, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -30,6 +30,7 @@ const deviceTypes = [
 const Contact = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [trackingLink, setTrackingLink] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     deviceType: "",
@@ -43,15 +44,23 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase.from("repair_requests").insert({
-        name: formData.name.trim(),
-        device_type: formData.deviceType,
-        problem: formData.problem.trim(),
-        contact_method: formData.contactMethod,
-        contact: formData.contact.trim(),
-      });
+      const { data, error } = await supabase
+        .from("repair_requests")
+        .insert({
+          name: formData.name.trim(),
+          device_type: formData.deviceType,
+          problem: formData.problem.trim(),
+          contact_method: formData.contactMethod,
+          contact: formData.contact.trim(),
+        })
+        .select("tracking_token")
+        .single();
 
       if (error) throw error;
+
+      // Generate tracking link
+      const trackingUrl = `${window.location.origin}/track/${data.tracking_token}`;
+      setTrackingLink(trackingUrl);
 
       toast({
         title: "Request Received! 🎉",
@@ -73,6 +82,13 @@ const Contact = () => {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const copyTrackingLink = () => {
+    if (trackingLink) {
+      navigator.clipboard.writeText(trackingLink);
+      toast({ title: "Link copied to clipboard!" });
     }
   };
 
@@ -132,9 +148,48 @@ const Contact = () => {
 
           {/* Form Side */}
           <div className="bg-card rounded-2xl p-6 md:p-8 border border-border shadow-lg">
-            <h3 className="text-xl font-bold text-foreground mb-6">Book a Repair</h3>
+            {trackingLink ? (
+              /* Success State */
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle className="w-8 h-8 text-accent" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-2">Request Submitted!</h3>
+                <p className="text-muted-foreground mb-6">
+                  Save this link to track your repair status anytime:
+                </p>
+                
+                <div className="bg-muted rounded-lg p-4 mb-4">
+                  <p className="text-sm text-foreground break-all font-mono">{trackingLink}</p>
+                </div>
+                
+                <div className="flex gap-3 justify-center">
+                  <Button onClick={copyTrackingLink} variant="outline">
+                    <Copy className="w-4 h-4 mr-2" />
+                    Copy Link
+                  </Button>
+                  <Button asChild>
+                    <a href={trackingLink} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      View Status
+                    </a>
+                  </Button>
+                </div>
+                
+                <Button
+                  variant="ghost"
+                  className="mt-6"
+                  onClick={() => setTrackingLink(null)}
+                >
+                  Submit Another Request
+                </Button>
+              </div>
+            ) : (
+              /* Form State */
+              <>
+                <h3 className="text-xl font-bold text-foreground mb-6">Book a Repair</h3>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name */}
               <div className="space-y-2">
                 <Label htmlFor="name">Your Name</Label>
@@ -246,6 +301,8 @@ const Contact = () => {
                 I'll respond within 24 hours. No spam, ever.
               </p>
             </form>
+              </>
+            )}
           </div>
         </div>
       </div>
