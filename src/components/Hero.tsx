@@ -32,13 +32,13 @@ const Hero = ({ brandName = "TechFix NL" }: HeroProps) => {
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-foreground">
-              Expert Repair for Your{" "}
-              <span className="gradient-text">Electronics</span> in the Netherlands
+              Your All-in-One{" "}
+              <span className="gradient-text">Tech Partner</span> in the Netherlands
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
-              From Mobiles & Computers to TVs & Heaters. If it's broken, I can fix it.
-              Professional repairs with a personal touch.
+              From Hardware Repair to Software Development & Financial Growth.
+              Your all-in-one technical partner in the Netherlands.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
