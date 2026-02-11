@@ -15,6 +15,12 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
+const serviceCategories = [
+  "Hardware Repair",
+  "Software Project",
+  "Trading Inquiry",
+];
+
 const deviceTypes = [
   "Laptop",
   "Desktop PC",
@@ -33,6 +39,7 @@ const Contact = () => {
   const [trackingLink, setTrackingLink] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: "",
+    serviceCategory: "",
     deviceType: "",
     problem: "",
     contactMethod: "whatsapp",
@@ -66,6 +73,7 @@ const Contact = () => {
 
       setFormData({
         name: "",
+        serviceCategory: "",
         deviceType: "",
         problem: "",
         contactMethod: "whatsapp",
@@ -202,26 +210,49 @@ const Contact = () => {
                 />
               </div>
 
-              {/* Device Type */}
+              {/* Service Category */}
               <div className="space-y-2">
-                <Label>Device Type</Label>
+                <Label>What do you need help with?</Label>
                 <Select
-                  value={formData.deviceType}
-                  onValueChange={(value) => setFormData({ ...formData, deviceType: value })}
+                  value={formData.serviceCategory}
+                  onValueChange={(value) => setFormData({ ...formData, serviceCategory: value })}
                   required
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select your device" />
+                    <SelectValue placeholder="Select a service" />
                   </SelectTrigger>
                   <SelectContent>
-                    {deviceTypes.map((device) => (
-                      <SelectItem key={device} value={device.toLowerCase()}>
-                        {device}
+                    {serviceCategories.map((cat) => (
+                      <SelectItem key={cat} value={cat.toLowerCase()}>
+                        {cat}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
+
+              {/* Device Type - only show for Hardware Repair */}
+              {formData.serviceCategory === "hardware repair" && (
+                <div className="space-y-2">
+                  <Label>Device Type</Label>
+                  <Select
+                    value={formData.deviceType}
+                    onValueChange={(value) => setFormData({ ...formData, deviceType: value })}
+                    required
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select your device" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {deviceTypes.map((device) => (
+                        <SelectItem key={device} value={device.toLowerCase()}>
+                          {device}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
 
               {/* Problem Description */}
               <div className="space-y-2">

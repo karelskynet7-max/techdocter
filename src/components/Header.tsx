@@ -10,8 +10,9 @@ const Header = ({ brandName = "TechFix NL" }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
-    { label: "Services", href: "#services" },
-    { label: "About", href: "#about" },
+    { label: "Repairs", href: "#services" },
+    { label: "Software & Web", href: "#digital-solutions" },
+    { label: "Trading & Finance", href: "#trading" },
     { label: "Contact", href: "#contact" },
   ];
 
