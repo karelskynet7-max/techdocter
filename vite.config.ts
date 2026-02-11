@@ -4,7 +4,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
-  base: "./", // Changing this to "./" makes all paths relative to the current folder
+  base: process.env.GITHUB_ACTIONS ? "/techdocter/" : "/",
   server: {
     host: "::",
     port: 8080,
