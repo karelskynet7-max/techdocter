@@ -13,14 +13,15 @@ import WhatsAppButton from "./components/WhatsAppButton";
 
 const queryClient = new QueryClient();
 
+const basename = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        {/* The 'basename' prop below fixes the 404 error on GitHub Pages */}
-        <BrowserRouter>
+        <BrowserRouter basename={basename}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/admin/login" element={<AdminLogin />} />
