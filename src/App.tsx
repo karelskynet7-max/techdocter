@@ -19,7 +19,8 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        {/* The 'basename' prop below fixes the 404 error on GitHub Pages */}
+        <BrowserRouter basename="/techdocter">
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/admin/login" element={<AdminLogin />} />
