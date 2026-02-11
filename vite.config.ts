@@ -3,9 +3,8 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: "/techdocter/", // <--- ADDED THIS LINE (Crucial for your specific repo)
+  base: "./", // Changing this to "./" makes all paths relative to the current folder
   server: {
     host: "::",
     port: 8080,
@@ -19,4 +18,9 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    outDir: "dist",
+    assetsDir: "assets",
+    emptyOutDir: true,
+  }
 }));
