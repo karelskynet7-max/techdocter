@@ -2,7 +2,12 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ] # This triggers the deploy whenever you sync from Lovable
+    branches: [ main ]
+
+# THIS SECTION PREVENTS THE "MULTIPLE ARTIFACTS" ERROR
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -15,23 +20,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
-
       - name: Install dependencies
         run: npm install
-
       - name: Build
         run: npm run build
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist # Vite projects output to the 'dist' folder
+          path: ./dist
 
   deploy:
     environment:
