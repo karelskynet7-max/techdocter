@@ -1,4 +1,4 @@
-import { ArrowRight, Shield, Clock, ThumbsUp } from "lucide-react";
+import { ArrowRight, Shield, Clock, ThumbsUp, BadgeCheck, MessageSquare, Languages } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-workbench.jpg";
 
@@ -8,9 +8,9 @@ interface HeroProps {
 
 const Hero = ({ brandName = "TechFix NL" }: HeroProps) => {
   const features = [
-    { icon: Shield, text: "Trusted Service" },
-    { icon: Clock, text: "Fast Turnaround" },
-    { icon: ThumbsUp, text: "Fair Pricing" },
+    { icon: BadgeCheck, text: "No Fix, No Fee" },
+    { icon: MessageSquare, text: "Free 15-min Digital Consultation" },
+    { icon: Languages, text: "NL/EN Support" },
   ];
 
   return (
@@ -37,8 +37,8 @@ const Hero = ({ brandName = "TechFix NL" }: HeroProps) => {
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
-              From Hardware Repair to Software Development & Financial Growth.
-              Your all-in-one technical partner in the Netherlands.
+              Expert Hardware Repair in the Netherlands meets Global Software & Financial Solutions.
+              From fixing circuits to coding the future.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
