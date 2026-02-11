@@ -13,6 +13,7 @@ const Header = ({ brandName = "TechFix NL" }: HeaderProps) => {
     { label: "Repairs", href: "#services" },
     { label: "Software & Web", href: "#digital-solutions" },
     { label: "Trading & Finance", href: "#trading" },
+    { label: "About Us", href: "#about" },
     { label: "Contact", href: "#contact" },
   ];
 

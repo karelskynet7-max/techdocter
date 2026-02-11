@@ -4,13 +4,14 @@ import Services from "@/components/Services";
 import DigitalSolutions from "@/components/DigitalSolutions";
 import FinancialMarkets from "@/components/FinancialMarkets";
 import HowItWorks from "@/components/HowItWorks";
+import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 // Change this to customize your brand name
-const BRAND_NAME = "Tech & Trade Solutions NL";
+const BRAND_NAME = "TechFix Global & Local";
 
 const Index = () => {
   return (
@@ -22,6 +23,7 @@ const Index = () => {
         <DigitalSolutions />
         <FinancialMarkets />
         <HowItWorks />
+        <Testimonials />
         <FAQ />
         <About />
         <Contact />

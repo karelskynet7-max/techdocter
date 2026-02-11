@@ -19,6 +19,7 @@ const serviceCategories = [
   "Hardware Repair",
   "Software Project",
   "Trading Inquiry",
+  "General Tech Question",
 ];
 
 const deviceTypes = [
@@ -107,6 +108,14 @@ const Contact = () => {
               Get in Touch
             </div>
 
+            <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 bg-accent/10 rounded-full text-sm font-medium text-accent">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
+              </span>
+              Currently accepting new projects & repairs in the Netherlands
+            </div>
+
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
               Let's Fix Your <span className="gradient-text">Device</span>
             </h2>
@@ -155,7 +164,7 @@ const Contact = () => {
           </div>
 
           {/* Form Side */}
-          <div className="bg-card rounded-2xl p-6 md:p-8 border border-border shadow-lg">
+          <div className="bg-card rounded-2xl p-6 md:p-8 border border-border shadow-lg ring-1 ring-accent/20">
             {trackingLink ? (
               /* Success State */
               <div className="text-center py-8">
