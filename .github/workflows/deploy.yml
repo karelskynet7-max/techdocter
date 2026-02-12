@@ -27,14 +27,16 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build
-        run: npm run build
         env:
-          # These pull the values you just saved in Step 2
+          # 1. Matches the URL secret you saved
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          
+          # 2. CRITICAL FIX: Maps your "Anon Key" secret to the "Publishable Key" variable your code wants
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }} 
+        run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
