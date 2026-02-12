@@ -26,16 +26,16 @@ jobs:
           node-version: 20
           cache: 'npm'
 
+      # CHANGED FROM 'npm ci' TO 'npm install' TO FIX YOUR ERROR
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build
         env:
-          # 1. Matches the URL secret you saved
+          # Passes your Supabase URL
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          
-          # 2. CRITICAL FIX: Maps your "Anon Key" secret to the "Publishable Key" variable your code wants
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }} 
+          # Maps the ANON_KEY secret to the PUBLISHABLE_KEY variable your code expects
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         run: npm run build
 
       - name: Upload artifact
