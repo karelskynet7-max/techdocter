@@ -52,10 +52,11 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
+      const deviceType = formData.deviceType || formData.serviceCategory || "general";
       const { data: trackingToken, error } = await supabase
         .rpc('submit_repair_request', {
           p_name: formData.name.trim(),
-          p_device_type: formData.deviceType,
+          p_device_type: deviceType,
           p_problem: formData.problem.trim(),
           p_contact_method: formData.contactMethod,
           p_contact: formData.contact.trim(),
