@@ -4,7 +4,6 @@ on:
   push:
     branches: [ main ]
 
-# THIS SECTION PREVENTS THE "MULTIPLE ARTIFACTS" ERROR
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -20,18 +19,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
+
       - name: Install dependencies
-        run: npm ci
+        run: npm install
+
       - name: Build
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
         run: npm run build
+        env:
+          # These pull the values you just saved in Step 2
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
