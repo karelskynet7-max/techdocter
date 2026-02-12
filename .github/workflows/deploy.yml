@@ -26,17 +26,19 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      # CHANGED FROM 'npm ci' TO 'npm install' TO FIX YOUR ERROR
       - name: Install dependencies
         run: npm install
 
       - name: Build
         env:
-          # Passes your Supabase URL
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          # Maps the ANON_KEY secret to the PUBLISHABLE_KEY variable your code expects
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-        run: npm run build
+        # THE MAGIC FIX IS HERE:
+        # 1. Build the site
+        # 2. Copy the index file to 404.html so GitHub handles routes correctly
+        run: |
+          npm run build
+          cp dist/index.html dist/404.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
