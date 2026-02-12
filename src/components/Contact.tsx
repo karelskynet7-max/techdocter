@@ -82,9 +82,10 @@ const Contact = () => {
         contact: "",
       });
     } catch (error: any) {
+      const message = error?.message || "Failed to submit request. Please try again.";
       toast({
         title: "Error",
-        description: "Failed to submit request. Please try again.",
+        description: message,
         variant: "destructive",
       });
     } finally {
