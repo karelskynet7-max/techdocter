@@ -66,7 +66,7 @@ const Contact = () => {
 
       // Generate tracking link using the returned tracking token
       const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
-      const trackingUrl = `${window.location.origin}${basePath}/techdocter/track/${trackingToken}`;
+      const trackingUrl = `${window.location.origin}${basePath}/track/${trackingToken}`;
       setTrackingLink(trackingUrl);
 
       toast({
